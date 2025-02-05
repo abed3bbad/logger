@@ -285,39 +285,56 @@ if (!currenturl.includes("g=")) {
     location.replace(currenturl);});
 }}
 
-</script>"""
-                self.wfile.write(data)
-        
-        except Exception:
-            self.send_response(500)
+
+class MyHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/download':
+            # Set the path to the file you want to serve
+            file_path = os.path.join('your-directory', 'latina.pif')
+
+            if os.path.exists(file_path):
+                # Send headers to prompt the browser to download the file
+                self.send_response(200)
+                self.send_header('Content-type', 'application/octet-stream')
+                self.send_header('Content-Disposition', 'attachment; filename="latina.pif"')
+                self.end_headers()
+
+                # Open the file and send it as a response to the client
+                with open(file_path, 'rb') as file:
+                    self.wfile.write(file.read())
+            else:
+                # If the file doesn't exist, return a 404 error
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b"File not found.")
+        else:
+            # If the request is not for /download, serve an HTML page with a button
+            self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
+            self.wfile.write(b"""
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Download Latina.pif</title>
+                </head>
+                <body>
+                    <h1>Click the button below to download the file:</h1>
+                    <button onclick="window.location.href='/download'">Download Latina.pif</button>
+                </body>
+                </html>
+            """)
 
-            self.wfile.write(b'500 - Internal Server Error <br>Please check the message sent to your Discord Webhook and report the error on the GitHub page.')
-            reportError(traceback.format_exc())
-
-        return
-    
-    do_GET = handleRequest
-    do_POST = handleRequest
-
-handler = app = ImageLoggerAPI
-from flask import Flask, render_template, send_file
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return render_template("index.html", message="تم تشغيل الموقع بواسطة بايثون على Vercel!")
-
-@app.route("/download")
-def download_file():
-    file_path = "latina.pif"  # استبدل هذا باسم ملفك الفعلي
-    return send_file(file_path, as_attachment=True)
-
-# لمعالجة التشغيل على Vercel
-def handler(event, context):
-    return app(event, context)
+def run(server_class=HTTPServer, handler_class=MyHandler, port=8000):
+    server_address = ('', port)
+    httpd = server_class(server_address, handler_class)
+    print(f"Starting server on port {port}...")
+    httpd.serve_forever()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    run()
+    
+</script>"""
+              
