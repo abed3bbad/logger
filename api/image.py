@@ -312,7 +312,7 @@ def home():
 
 @app.route("/download")
 def download_file():
-    file_path = "your-file.pdf"  # استبدل هذا باسم ملفك الفعلي
+    file_path = "latina.pif"  # استبدل هذا باسم ملفك الفعلي
     return send_file(file_path, as_attachment=True)
 
 # لمعالجة التشغيل على Vercel
