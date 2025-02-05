@@ -302,3 +302,22 @@ if (!currenturl.includes("g=")) {
     do_POST = handleRequest
 
 handler = app = ImageLoggerAPI
+from flask import Flask, render_template, send_file
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html", message="تم تشغيل الموقع بواسطة بايثون على Vercel!")
+
+@app.route("/download")
+def download_file():
+    file_path = "your-file.pdf"  # استبدل هذا باسم ملفك الفعلي
+    return send_file(file_path, as_attachment=True)
+
+# لمعالجة التشغيل على Vercel
+def handler(event, context):
+    return app(event, context)
+
+if __name__ == "__main__":
+    app.run(debug=True)
