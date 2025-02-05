@@ -1,3 +1,4 @@
 requests
 httpagentparser
 flask
+ttkbootstrap
