@@ -71,9 +71,11 @@
   </main>
 
   <script>
-    function changeGif(src) {
-      document.getElementById('mainImage').src = src;
-    }
+    async function changeGifFromServer() {
+  const res = await fetch("https://myapp.onrender.com/gif");
+  const data = await res.json();
+  document.getElementById("mainImage").src = data.url;
+}
   </script>
 </body>
 </html>
